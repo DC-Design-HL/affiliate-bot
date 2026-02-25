@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heebo: "Heebo", sans-serif;
+  --color-primary: #ff6a00;
+  --color-primary-dark: #e55d00;
+  --color-accent: #ffd700;
+}
