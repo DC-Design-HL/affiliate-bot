@@ -5,12 +5,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const categories = [
-  { name: "אלקטרוניקה", slug: "electronics", emoji: "📱" },
-  { name: "בית וגן", slug: "home-garden", emoji: "🏠" },
-  { name: "גיימינג", slug: "gaming", emoji: "🎮" },
-  { name: "רכב", slug: "automotive", emoji: "🚗" },
-  { name: "מטבח", slug: "kitchen", emoji: "🍳" },
-  { name: "ספורט", slug: "sports", emoji: "⚽" },
+  { name: "אלקטרוניקה", slug: "electronics" },
+  { name: "בית וגן", slug: "home-garden" },
+  { name: "גיימינג", slug: "gaming" },
+  { name: "רכב", slug: "automotive" },
+  { name: "מטבח", slug: "kitchen" },
+  { name: "ספורט", slug: "sports" },
 ];
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
             המוצרים הכי משתלמים
             <br />
-            <span className="text-[var(--color-primary)]">מאליאקספרס 🛒</span>
+            <span className="text-[var(--color-primary)]">מאליאקספרס</span>
           </h1>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             סקירות מקצועיות בעברית, השוואות מחירים, וטיפים לקנייה חכמה.
@@ -36,9 +36,9 @@ export default function Home() {
           <div className="flex justify-center gap-4">
             <Link
               href="/reviews"
-              className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg font-bold text-lg transition-colors"
+              className="cursor-pointer bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-8 py-3.5 rounded-lg font-bold text-lg transition-colors duration-200 shadow-sm hover:shadow-md"
             >
-              לסקירות →
+              לסקירות ←
             </Link>
           </div>
         </div>
@@ -52,9 +52,8 @@ export default function Home() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="bg-gray-50 hover:bg-orange-50 border border-gray-200 hover:border-[var(--color-primary)] rounded-xl p-6 text-center transition-all"
+              className="bg-gray-50 hover:bg-orange-50 border border-gray-200 hover:border-[var(--color-primary)] rounded-xl p-6 text-center transition-all duration-200 cursor-pointer"
             >
-              <div className="text-3xl mb-2">{cat.emoji}</div>
               <div className="font-bold">{cat.name}</div>
             </Link>
           ))}
