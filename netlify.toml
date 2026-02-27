@@ -1,0 +1,5 @@
+
+[[redirects]]
+  from = "/api/tiktok/callback"
+  to = "/.netlify/functions/tiktok-callback"
+  status = 200
