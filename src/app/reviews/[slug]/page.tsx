@@ -4,8 +4,11 @@ import ProductCard from "@/components/ProductCard";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ReviewCard from "@/components/ReviewCard";
 import { notFound } from "next/navigation";
+import { usdToIls, categoryNames } from "@/lib/utils";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export function generateStaticParams() {
   return getAllReviews().map((r) => ({ slug: r.meta.slug }));
@@ -28,69 +31,210 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
   if (!review) notFound();
 
   const topProduct = review.meta.products?.[0];
+  const allReviews = getAllReviews();
+  const relatedReviews = allReviews
+    .filter((r) => r.meta.slug !== slug && r.meta.category === review.meta.category)
+    .slice(0, 3);
+  const otherReviews = relatedReviews.length < 3
+    ? [...relatedReviews, ...allReviews.filter((r) => r.meta.slug !== slug && r.meta.category !== review.meta.category).slice(0, 3 - relatedReviews.length)]
+    : relatedReviews;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <main className="flex-1 max-w-4xl mx-auto px-4 py-8 md:py-12 pb-24 md:pb-12">
-        <article>
-          {/* Breadcrumb-like category tag */}
-          <div className="mb-4">
-            <span className="text-xs bg-orange-100 text-[var(--color-primary)] px-3 py-1 rounded-full font-medium">
-              סקירה
-            </span>
-          </div>
+      <main className="flex-1 pb-24 md:pb-12">
+        {/* Breadcrumb */}
+        <div className="max-w-4xl mx-auto px-4 pt-6">
+          <nav className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+            <Link href="/" className="hover:text-[var(--color-primary)] cursor-pointer">ראשי</Link>
+            <span>/</span>
+            <Link href="/reviews" className="hover:text-[var(--color-primary)] cursor-pointer">סקירות</Link>
+            <span>/</span>
+            <Link href={`/category/${review.meta.category}`} className="hover:text-[var(--color-primary)] cursor-pointer">
+              {categoryNames[review.meta.category] || review.meta.category}
+            </Link>
+          </nav>
+        </div>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">{review.meta.title}</h1>
+        {/* Hero */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-4 py-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs bg-gradient-to-l from-orange-500 to-red-500 text-white px-3 py-1 rounded-full font-bold">
+                סקירה מקצועית
+              </span>
+              <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">
+                {categoryNames[review.meta.category] || review.meta.category}
+              </span>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-8 border-b border-gray-100 pb-6">
-            <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-              </svg>
-              {new Date(review.meta.date).toLocaleDateString("he-IL")}
-            </span>
-            {review.meta.updated !== review.meta.date && (
+            <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">{review.meta.title}</h1>
+
+            <p className="text-lg text-gray-500 mb-6 leading-relaxed">{review.meta.excerpt}</p>
+
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                 </svg>
-                עודכן: {new Date(review.meta.updated).toLocaleDateString("he-IL")}
+                {new Date(review.meta.date).toLocaleDateString("he-IL")}
               </span>
-            )}
-            <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-              </svg>
-              {review.meta.products?.length || 0} מוצרים
-            </span>
-          </div>
-
-          {/* Products Grid */}
-          {review.meta.products && review.meta.products.length > 0 && (
-            <section className="mb-10">
-              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[var(--color-primary)]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+              {review.meta.updated !== review.meta.date && (
+                <span className="flex items-center gap-1.5 text-green-600 font-medium">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                  </svg>
+                  עודכן: {new Date(review.meta.updated).toLocaleDateString("he-IL")}
+                </span>
+              )}
+              <span className="flex items-center gap-1.5 font-medium">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                 </svg>
-                דירוג המוצרים
+                {review.meta.products?.length || 0} מוצרים נבדקו
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+          <article>
+            {/* Quick comparison table */}
+            {review.meta.products && review.meta.products.length > 1 && (
+              <section className="mb-10 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                <div className="bg-gradient-to-l from-orange-500 to-red-500 text-white px-6 py-4">
+                  <h2 className="text-lg font-bold flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                    </svg>
+                    טבלת השוואה מהירה
+                  </h2>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100 bg-gray-50">
+                        <th className="text-right px-4 py-3 font-bold">#</th>
+                        <th className="text-right px-4 py-3 font-bold">מוצר</th>
+                        <th className="text-right px-4 py-3 font-bold">מחיר</th>
+                        <th className="text-right px-4 py-3 font-bold">דירוג</th>
+                        <th className="text-center px-4 py-3 font-bold"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {review.meta.products.map((p, i) => (
+                        <tr key={i} className={`border-b border-gray-50 hover:bg-orange-50 transition-colors ${i === 0 ? "bg-orange-50/50" : ""}`}>
+                          <td className="px-4 py-3">
+                            <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${i === 0 ? "bg-orange-500 text-white" : "bg-gray-100 text-gray-600"}`}>
+                              {i + 1}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 font-medium max-w-48">
+                            <div className="truncate">{p.name}</div>
+                            {i === 0 && <span className="text-xs text-orange-600 font-bold">הבחירה שלנו</span>}
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="font-extrabold text-gray-900">₪{usdToIls(p.price)}</div>
+                            <div className="text-xs text-gray-400" dir="ltr">{p.price}</div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-1" dir="ltr">
+                              <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                              <span className="font-bold">{p.rating}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <a
+                              href={p.affiliateUrl}
+                              target="_blank"
+                              rel="nofollow sponsored noopener"
+                              className="inline-block cursor-pointer bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors"
+                            >
+                              לרכישה
+                            </a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+
+            {/* Products Grid */}
+            {review.meta.products && review.meta.products.length > 0 && (
+              <section className="mb-10">
+                <h2 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
+                  <svg className="w-6 h-6 text-[var(--color-primary)]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                  </svg>
+                  דירוג המוצרים
+                </h2>
+                <div className="grid md:grid-cols-2 gap-5">
+                  {review.meta.products.map((p, i) => (
+                    <ProductCard key={i} product={p} rank={i + 1} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Article Content */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-10 shadow-sm">
+              <div className="prose prose-lg max-w-none prose-headings:font-extrabold prose-a:text-[var(--color-primary)] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+                <MDXRemote source={review.content} />
+              </div>
+            </div>
+
+            {/* Trust section */}
+            <section className="mt-10 bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+              <h2 className="text-xl font-extrabold mb-6 flex items-center gap-2">
+                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                למה לסמוך עלינו?
               </h2>
-              <div className="grid md:grid-cols-2 gap-4">
-                {review.meta.products.map((p, i) => (
-                  <ProductCard key={i} product={p} rank={i + 1} />
-                ))}
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="flex items-start gap-3 p-4 bg-green-50 rounded-xl">
+                  <div className="text-2xl">🔍</div>
+                  <div>
+                    <h3 className="font-bold text-sm mb-1">בדיקה מעמיקה</h3>
+                    <p className="text-xs text-gray-500">בודקים דירוגים, כמות מכירות, ותלונות של קונים אמיתיים</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl">
+                  <div className="text-2xl">🔗</div>
+                  <div>
+                    <h3 className="font-bold text-sm mb-1">לינקים ישירים</h3>
+                    <p className="text-xs text-gray-500">כל הקישורים מובילים ישירות למוכר באליאקספרס</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl">
+                  <div className="text-2xl">🔄</div>
+                  <div>
+                    <h3 className="font-bold text-sm mb-1">עדכון שוטף</h3>
+                    <p className="text-xs text-gray-500">המחירים והקישורים מתעדכנים באופן קבוע</p>
+                  </div>
+                </div>
               </div>
             </section>
-          )}
 
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-[var(--color-primary)] prose-a:no-underline hover:prose-a:underline">
-            <MDXRemote source={review.content} />
-          </div>
-        </article>
+            {/* Related reviews */}
+            {otherReviews.length > 0 && (
+              <section className="mt-10">
+                <h2 className="text-xl font-extrabold mb-6">סקירות נוספות שיעניינו אתכם</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {otherReviews.map((r) => (
+                    <ReviewCard key={r.meta.slug} review={r.meta} />
+                  ))}
+                </div>
+              </section>
+            )}
+          </article>
+        </div>
       </main>
 
-      {/* Sticky mobile CTA for top product */}
       {topProduct && (
         <StickyMobileCTA affiliateUrl={topProduct.affiliateUrl} productName={topProduct.name} />
       )}

@@ -1,64 +1,83 @@
 import Link from "next/link";
 import { ReviewMeta } from "@/lib/content";
+import { usdToIls, categoryNames, categoryEmoji } from "@/lib/utils";
 
-const categoryNames: Record<string, string> = {
-  electronics: "אלקטרוניקה",
-  "home-garden": "בית וגן",
-  fashion: "אופנה",
-  "beauty-health": "יופי ובריאות",
-  sports: "ספורט",
-  "toys-kids": "צעצועים וילדים",
-  automotive: "רכב",
-  tools: "כלי עבודה",
-  gaming: "גיימינג",
-  kitchen: "מטבח",
-};
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  electronics: (
-    <svg className="w-10 h-10 text-[var(--color-primary)]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
-  ),
-  gaming: (
-    <svg className="w-10 h-10 text-[var(--color-primary)]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875S10.5 3.089 10.5 4.125c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.035 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.007-1.875 2.25-1.875s2.25.84 2.25 1.875c0 .369-.128.713-.349 1.003-.215.283-.401.604-.401.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.369 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" /></svg>
-  ),
-};
-
-const defaultIcon = (
-  <svg className="w-10 h-10 text-[var(--color-primary)]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
-);
+function Stars({ rating }: { rating: number }) {
+  return (
+    <div className="flex items-center gap-0.5" dir="ltr">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <svg
+          key={i}
+          className={`w-3.5 h-3.5 ${i <= Math.round(rating) ? "text-yellow-400" : "text-gray-200"}`}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
 
 export default function ReviewCard({ review }: { review: ReviewMeta }) {
   const productCount = review.products?.length || 0;
+  const topProduct = review.products?.[0];
+  const avgRating = review.products?.length
+    ? (review.products.reduce((sum, p) => sum + p.rating, 0) / review.products.length).toFixed(1)
+    : null;
+  const lowestPrice = review.products?.length
+    ? review.products.reduce((min, p) => {
+        const val = parseFloat(p.price.replace(/[^0-9.]/g, ""));
+        return val < min ? val : min;
+      }, Infinity)
+    : null;
 
   return (
-    <Link href={`/reviews/${review.slug}`} className="group cursor-pointer">
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg hover:border-orange-200 transition-all duration-200">
-        <div className="bg-gradient-to-bl from-orange-50 to-amber-50 h-36 flex items-center justify-center">
-          {categoryIcons[review.category] || defaultIcon}
-        </div>
-        <div className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+    <Link href={`/reviews/${review.slug}`} className="group cursor-pointer block">
+      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-300 transition-all duration-300 h-full flex flex-col">
+        {/* Top section with category gradient */}
+        <div className="relative bg-gradient-to-bl from-orange-50 via-amber-50 to-yellow-50 px-5 pt-5 pb-4">
+          <div className="flex items-start justify-between">
+            <span className="text-3xl">{categoryEmoji[review.category] || "📦"}</span>
+            {lowestPrice && lowestPrice < Infinity && (
+              <div className="bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+                החל מ-₪{usdToIls(`$${lowestPrice}`)}
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2 mt-3">
+            <span className="text-xs bg-white/80 text-gray-600 px-2.5 py-1 rounded-full font-medium backdrop-blur-sm">
               {categoryNames[review.category] || review.category}
             </span>
             {productCount >= 5 && (
-              <span className="text-xs bg-orange-100 text-[var(--color-primary)] px-2 py-1 rounded-full font-medium">
-                השוואה מקיפה
+              <span className="text-xs bg-orange-500 text-white px-2.5 py-1 rounded-full font-bold">
+                TOP {productCount}
               </span>
             )}
           </div>
-          <h3 className="text-lg font-bold mt-1 group-hover:text-[var(--color-primary)] transition-colors duration-200 leading-snug">
+        </div>
+
+        {/* Content */}
+        <div className="p-5 flex-1 flex flex-col">
+          <h3 className="text-lg font-bold leading-snug group-hover:text-[var(--color-primary)] transition-colors duration-200">
             {review.title}
           </h3>
-          <p className="text-gray-500 text-sm mt-2 line-clamp-2">{review.excerpt}</p>
-          <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <p className="text-gray-500 text-sm mt-2 line-clamp-2 leading-relaxed">{review.excerpt}</p>
+
+          {/* Stats row */}
+          <div className="flex items-center gap-4 mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500 mt-auto">
+            {avgRating && (
+              <div className="flex items-center gap-1.5">
+                <Stars rating={parseFloat(avgRating)} />
+                <span className="font-medium text-gray-700">{avgRating}</span>
+              </div>
+            )}
+            <span className="flex items-center gap-1 font-medium">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
               </svg>
               {productCount} מוצרים
             </span>
-            <span>{new Date(review.date).toLocaleDateString("he-IL")}</span>
           </div>
         </div>
       </div>

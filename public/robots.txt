@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://meshtalem.netlify.app
+
+# Sitemaps
+Sitemap: https://meshtalem.netlify.app/sitemap.xml
