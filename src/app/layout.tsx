@@ -29,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
+        <meta name="google-site-verification" content="1FBR5tm7iJ8pmFddOwlj1aizbzViDcCZAczfLZtJH74" />
         <link
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
           rel="stylesheet"
