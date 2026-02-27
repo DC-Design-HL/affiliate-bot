@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://meshtalem.netlify.app',
+  siteUrl: 'https://meshtalem.design-dc.com',
   generateRobotsTxt: true,
   changefreq: 'weekly',
   priority: 0.7,

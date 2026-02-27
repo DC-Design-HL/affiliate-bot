@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://meshtalem.netlify.app
+Host: https://meshtalem.design-dc.com
 
 # Sitemaps
-Sitemap: https://meshtalem.netlify.app/sitemap.xml
+Sitemap: https://meshtalem.design-dc.com/sitemap.xml
