@@ -30,6 +30,9 @@ export default function RootLayout({
     <html lang="he" dir="rtl">
       <head>
         <meta name="google-site-verification" content="rW08eTrQB6759EOcXvVOVwayxqiLI3EWOSuX1stsGTk" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
         <link
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
           rel="stylesheet"
