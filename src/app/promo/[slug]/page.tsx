@@ -23,8 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "article",
       locale: "he_IL",
       siteName: "משתלם",
-      url: `https://meshtalem.netlify.app/promo/${slug}`,
+      url: `https://meshtalem.design-dc.com/promo/${slug}`,
     },
+    alternates: { canonical: `https://meshtalem.design-dc.com/promo/${slug}` },
   };
 }
 

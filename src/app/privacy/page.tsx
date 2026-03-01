@@ -1,4 +1,4 @@
-export const metadata = { title: 'מדיניות פרטיות - משתלם' };
+export const metadata = { title: 'מדיניות פרטיות - משתלם', alternates: { canonical: "https://meshtalem.design-dc.com/privacy" } };
 
 export default function Privacy() {
   return (

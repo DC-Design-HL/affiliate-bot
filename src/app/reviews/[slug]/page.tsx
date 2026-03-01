@@ -18,10 +18,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const review = getReviewBySlug(slug);
   if (!review) return {};
+  const url = `https://meshtalem.design-dc.com/reviews/${slug}`;
+  const ogImageUrl = `https://meshtalem.design-dc.com/api/og?title=${encodeURIComponent(review.meta.title)}&category=${encodeURIComponent(review.meta.category)}`;
   return {
     title: `${review.meta.title} | משתלם`,
     description: review.meta.seo?.description || review.meta.excerpt,
     keywords: review.meta.seo?.keywords,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: review.meta.title,
+      description: review.meta.seo?.description || review.meta.excerpt,
+      url,
+      type: "article",
+      locale: "he_IL",
+      siteName: "משתלם",
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: review.meta.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: review.meta.title,
+      description: review.meta.seo?.description || review.meta.excerpt,
+      images: [ogImageUrl],
+    },
   };
 }
 
@@ -39,8 +59,52 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
     ? [...relatedReviews, ...allReviews.filter((r) => r.meta.slug !== slug && r.meta.category !== review.meta.category).slice(0, 3 - relatedReviews.length)]
     : relatedReviews;
 
+  // JSON-LD structured data
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: review.meta.title,
+    description: review.meta.seo?.description || review.meta.excerpt,
+    datePublished: review.meta.date,
+    dateModified: review.meta.updated || review.meta.date,
+    author: { "@type": "Organization", name: "משתלם" },
+    publisher: { "@type": "Organization", name: "משתלם", url: "https://meshtalem.design-dc.com" },
+    url: `https://meshtalem.design-dc.com/reviews/${slug}`,
+  };
+
+  // Add Product+Review schema if products exist
+  const productJsonLd = review.meta.products?.map((p, i) => ({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    review: {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: p.rating, bestRating: 5 },
+      author: { "@type": "Organization", name: "משתלם" },
+      reviewBody: review.meta.excerpt,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: p.rating,
+      bestRating: 5,
+      ratingCount: 1,
+    },
+    offers: {
+      "@type": "Offer",
+      url: p.affiliateUrl,
+      priceCurrency: "USD",
+      price: parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0,
+      availability: "https://schema.org/InStock",
+    },
+    ...(i === 0 ? { position: 1 } : {}),
+  })) || [];
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {productJsonLd.map((p, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(p) }} />
+      ))}
       <Header />
       <main className="flex-1 pb-24 md:pb-12">
         {/* Breadcrumb */}

@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${name} — סקירות מאליאקספרס | משתלם`,
     description: `סקירות וביקורות מוצרי ${name} מאליאקספרס בעברית`,
+    alternates: { canonical: `https://meshtalem.design-dc.com/category/${slug}` },
   };
 }
 

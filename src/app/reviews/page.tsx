@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "סקירות מוצרים מאליאקספרס | משתלם",
   description: "כל הסקירות והביקורות שלנו על מוצרים מאליאקספרס בעברית",
+  alternates: { canonical: "https://meshtalem.design-dc.com/reviews" },
 };
 
 export default function ReviewsPage() {

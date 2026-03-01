@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "מבצעים חמים מאליאקספרס | משתלם",
   description: "מבצעים והנחות חמות מאליאקספרס — עודכן יומית",
+  alternates: { canonical: "https://meshtalem.design-dc.com/deals" },
 };
 
 export default function DealsPage() {

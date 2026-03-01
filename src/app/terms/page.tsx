@@ -1,4 +1,4 @@
-export const metadata = { title: 'תנאי שימוש - משתלם' };
+export const metadata = { title: 'תנאי שימוש - משתלם', alternates: { canonical: "https://meshtalem.design-dc.com/terms" } };
 
 export default function Terms() {
   return (

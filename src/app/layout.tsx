@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   description: "סקירות וביקורות מוצרים מאליאקספרס בעברית. מצאו את המוצרים הכי משתלמים עם המלצות אמיתיות.",
   keywords: ["אליאקספרס", "סקירות", "ביקורות", "מוצרים משתלמים", "קניות אונליין"],
   metadataBase: new URL("https://meshtalem.design-dc.com"),
+  alternates: {
+    canonical: "https://meshtalem.design-dc.com",
+  },
   openGraph: {
     title: "משתלם - המוצרים הכי משתלמים מאליאקספרס 🛒",
     description: "סקירות מקצועיות בעברית. השוואות מחירים. טיפים לקנייה חכמה.",

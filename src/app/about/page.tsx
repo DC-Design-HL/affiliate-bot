@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "אודות | משתלם",
   description: "אודות אתר משתלם — סקירות מוצרים מאליאקספרס בעברית",
+  alternates: { canonical: "https://meshtalem.design-dc.com/about" },
 };
 
 export default function AboutPage() {
