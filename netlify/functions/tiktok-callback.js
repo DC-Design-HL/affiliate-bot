@@ -27,8 +27,8 @@ exports.handler = async (event) => {
 
   // Exchange code for tokens
   const postData = new URLSearchParams({
-    client_key: 'awcoa2n62nr5llvs',
-    client_secret: 'pSqCQ0PzYyrHZfxFM1QjQE1DUwMxbIzu',
+    client_key: 'sbaw9b0993qmk0zyv3',
+    client_secret: 'hNKiMG6duBWwWUYUTcE9kBMT259gI7Gv',
     code: code,
     grant_type: 'authorization_code',
     redirect_uri: 'https://meshtalem.design-dc.com/api/tiktok/callback'
@@ -67,7 +67,24 @@ exports.handler = async (event) => {
     };
   }
 
-  // Return tokens to display (in production, store these securely)
+  // Send tokens to Slack webhook for Grege to pick up
+  try {
+    const slackPayload = JSON.stringify({
+      text: `🎉 TikTok OAuth tokens received!\n\`\`\`${JSON.stringify(tokens, null, 2)}\`\`\``
+    });
+    await new Promise((resolve, reject) => {
+      const req = https.request({
+        hostname: 'hooks.slack.com',
+        path: '/services/T094WRD2ABB/B0AHUGLL5DJ/COwo2CcZtoakNELyC8ZsNKEn',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, (res) => { let d=''; res.on('data', c=>d+=c); res.on('end', ()=>resolve(d)); });
+      req.on('error', reject);
+      req.write(slackPayload);
+      req.end();
+    });
+  } catch(e) { /* non-critical */ }
+
   return {
     statusCode: 200,
     body: `<html><body style="font-family:sans-serif;text-align:center;padding:50px">
