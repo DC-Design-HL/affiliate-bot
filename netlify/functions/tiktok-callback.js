@@ -27,8 +27,8 @@ exports.handler = async (event) => {
 
   // Exchange code for tokens
   const postData = new URLSearchParams({
-    client_key: 'sbaw9b0993qmk0zyv3',
-    client_secret: 'hNKiMG6duBWwWUYUTcE9kBMT259gI7Gv',
+    client_key: 'awga68dnwwuvfrng',
+    client_secret: 'eknIJFuLb0kzIbTN8OKT4sY43ICuzDG5',
     code: code,
     grant_type: 'authorization_code',
     redirect_uri: 'https://meshtalem.design-dc.com/api/tiktok/callback'
