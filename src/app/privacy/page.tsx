@@ -1,8 +1,13 @@
 export const metadata = { title: 'מדיניות פרטיות - משתלם', alternates: { canonical: "https://meshtalem.design-dc.com/privacy" } };
 
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 export default function Privacy() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12" dir="rtl">
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 max-w-3xl mx-auto px-4 py-12" dir="rtl">
       <h1 className="text-3xl font-bold mb-6">מדיניות פרטיות</h1>
       <p className="text-gray-600 mb-4">עדכון אחרון: פברואר 2026</p>
       
@@ -29,8 +34,10 @@ export default function Privacy() {
         <p>Our website uses TikTok Content Posting API to publish video content. We only access our own TikTok account for content publishing. No user TikTok data is collected or stored.</p>
         
         <h2 className="text-xl font-semibold mt-6">8. יצירת קשר</h2>
-        <p>לשאלות בנוגע למדיניות הפרטיות, ניתן לפנות אלינו בכתובת: dc.design.hl@gmail.com</p>
+        <p>לשאלות בנוגע למדיניות הפרטיות, ניתן לפנות אלינו בכתובת: info@design-dc.com</p>
       </section>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }

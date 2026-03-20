@@ -73,15 +73,37 @@ export default function Footer() {
               <Link href="/reviews" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">כל הסקירות</Link>
               <Link href="/deals" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">מבצעים חמים</Link>
               <Link href="/about" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">אודות</Link>
+              <Link href="/methodology" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">איך אנחנו סוקרים</Link>
+            </div>
+          </div>
+
+          {/* Contact & Legal */}
+          <div>
+            <h3 className="text-white font-bold mb-4">יצירת קשר ומידע</h3>
+            <div className="flex flex-col gap-2">
+              <a href="mailto:info@design-dc.com" className="text-sm hover:text-[var(--color-primary)] transition-colors flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                צרו קשר
+              </a>
+              <Link href="/privacy" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">מדיניות פרטיות</Link>
+              <Link href="/terms" className="text-sm hover:text-[var(--color-primary)] transition-colors cursor-pointer">תנאי שימוש</Link>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6">
-          <p className="text-xs text-center leading-relaxed">
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center">
+          <p className="text-xs text-gray-400 leading-relaxed mb-3">
             האתר משתמש בקישורי שותפים. רכישה דרך הקישורים שלנו תומכת בהמשך פעילות האתר ללא עלות נוספת עבורכם.
           </p>
-          <p className="text-xs text-center mt-2">© {new Date().getFullYear()} משתלם. כל הזכויות שמורות.</p>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-xs text-gray-500">
+            <span>© 2026 משתלם — כל הזכויות שמורות</span>
+            <span className="hidden md:inline">•</span>
+            <span>האתר משתמש בקישורי שותפים</span>
+            <span className="hidden md:inline">•</span>
+            <a href="mailto:info@design-dc.com" className="hover:text-white transition-colors">info@design-dc.com</a>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,8 +1,13 @@
 export const metadata = { title: 'תנאי שימוש - משתלם', alternates: { canonical: "https://meshtalem.design-dc.com/terms" } };
 
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 export default function Terms() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12" dir="rtl">
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 max-w-3xl mx-auto px-4 py-12" dir="rtl">
       <h1 className="text-3xl font-bold mb-6">תנאי שימוש</h1>
       <p className="text-gray-600 mb-4">עדכון אחרון: פברואר 2026</p>
       
@@ -26,8 +31,10 @@ export default function Terms() {
         <p>אנו שומרים לעצמנו את הזכות לעדכן תנאים אלה בכל עת. המשך השימוש באתר לאחר עדכון מהווה הסכמה לתנאים המעודכנים.</p>
         
         <h2 className="text-xl font-semibold mt-6">7. יצירת קשר</h2>
-        <p>לשאלות בנוגע לתנאי השימוש, ניתן לפנות אלינו בכתובת: dc.design.hl@gmail.com</p>
+        <p>לשאלות בנוגע לתנאי השימוש, ניתן לפנות אלינו בכתובת: info@design-dc.com</p>
       </section>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }
