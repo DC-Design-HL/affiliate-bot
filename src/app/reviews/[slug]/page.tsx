@@ -10,6 +10,26 @@ import { usdToIls, categoryNames } from "@/lib/utils";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+// Extract FAQ from content for schema
+function extractFAQFromContent(content: string) {
+  const faqRegex = /\*\*שאלה:\*\*\s*([^*]+)\s*\*\*תשובה:\*\*\s*([^*]+?)(?=\*\*שאלה:|$)/g;
+  const faqs = [];
+  let match;
+  
+  while ((match = faqRegex.exec(content)) !== null) {
+    faqs.push({
+      "@type": "Question",
+      "name": match[1].trim(),
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": match[2].trim()
+      }
+    });
+  }
+  
+  return faqs;
+}
+
 export function generateStaticParams() {
   return getAllReviews().map((r) => ({ slug: r.meta.slug }));
 }
@@ -72,6 +92,13 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
     url: `https://meshtalem.design-dc.com/reviews/${slug}`,
   };
 
+  // Add FAQ schema for guide articles
+  const faqJsonLd = review.meta.category === 'guides' && review.content.includes('שאלה:') ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": extractFAQFromContent(review.content)
+  } : null;
+
   // Add Product+Review schema if products exist
   const productJsonLd = review.meta.products?.map((p, i) => ({
     "@context": "https://schema.org",
@@ -105,6 +132,9 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
       {productJsonLd.map((p, i) => (
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(p) }} />
       ))}
+      {faqJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      )}
       <Header />
       <main className="flex-1 pb-24 md:pb-12">
         {/* Breadcrumb */}

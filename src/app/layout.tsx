@@ -50,9 +50,20 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect" 
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
           rel="stylesheet"
         />
+        <link rel="alternate" hrefLang="he-IL" href="https://meshtalem.design-dc.com" />
+        <link rel="alternate" hrefLang="x-default" href="https://meshtalem.design-dc.com" />
       </head>
       <body className="font-heebo antialiased bg-white text-gray-900">
         {children}
