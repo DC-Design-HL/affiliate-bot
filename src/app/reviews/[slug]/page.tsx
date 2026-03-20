@@ -5,6 +5,8 @@ import StickyMobileCTA from "@/components/StickyMobileCTA";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReviewCard from "@/components/ReviewCard";
+import ShareButtons from "@/components/ShareButtons";
+import RelatedArticles from "@/components/RelatedArticles";
 import { notFound } from "next/navigation";
 import { usdToIls, categoryNames } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -313,6 +315,21 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
                 </div>
               </div>
             </section>
+
+            {/* Share buttons */}
+            <section className="mt-10">
+              <ShareButtons 
+                title={review.meta.title}
+                url={`https://meshtalem.design-dc.com/reviews/${slug}`}
+              />
+            </section>
+
+            {/* Related articles from same category */}
+            {relatedReviews.length > 0 && (
+              <section className="mt-10">
+                <RelatedArticles articles={relatedReviews.map(r => r.meta)} />
+              </section>
+            )}
 
             {/* Related reviews */}
             {otherReviews.length > 0 && (

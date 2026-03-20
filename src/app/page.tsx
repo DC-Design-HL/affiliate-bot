@@ -182,27 +182,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter */}
+      {/* Quick links / Call to action */}
       <section className="bg-gradient-to-l from-orange-500 to-red-500 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center text-white">
           <h2 className="text-2xl md:text-3xl font-extrabold mb-3">
-            רוצים לקבל דילים ישר לאימייל?
+            מוכנים לקנות חכם?
           </h2>
           <p className="text-orange-100 mb-6">
-            הצטרפו ל-1,000+ ישראלים שמקבלים את המבצעים הכי טובים מאליאקספרס
+            בדקנו כבר מאות מוצרים — כדי שתמצאו בדיוק מה שאתם צריכים
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="האימייל שלכם..."
-              className="flex-1 px-5 py-3.5 rounded-xl text-gray-900 placeholder-gray-400 font-medium text-base outline-none focus:ring-2 focus:ring-white"
-              dir="ltr"
-            />
-            <button className="cursor-pointer bg-gray-900 hover:bg-gray-800 text-white px-6 py-3.5 rounded-xl font-bold transition-colors duration-200 whitespace-nowrap">
-              הרשמו בחינם
-            </button>
+            <Link
+              href="/reviews" 
+              className="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-6 py-3.5 rounded-xl font-bold transition-colors duration-200 text-center cursor-pointer"
+            >
+              גלו את הסקירות
+            </Link>
+            <Link
+              href="/deals"
+              className="flex-1 bg-white/20 hover:bg-white/30 text-white px-6 py-3.5 rounded-xl font-bold transition-colors duration-200 text-center backdrop-blur-sm cursor-pointer"
+            >
+              מבצעים חמים
+            </Link>
           </div>
-          <p className="text-xs text-orange-200 mt-3">ללא ספאם. אפשר לבטל בכל עת.</p>
+          <p className="text-xs text-orange-200 mt-3">סקירות מקצועיות בעברית — חינם לגמרי</p>
         </div>
       </section>
 
