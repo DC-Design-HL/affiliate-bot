@@ -22,12 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const promoPages: MetadataRoute.Sitemap = reviews.map((r) => ({
-    url: `${baseUrl}/promo/${r.meta.slug}`,
-    lastModified: r.meta.updated || r.meta.date,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
+  // Promo pages excluded from sitemap — they canonical to /reviews/ pages
+  // to avoid duplicate content penalties from Google
 
   const categories = getAllCategories();
   const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
@@ -37,5 +33,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...reviewPages, ...promoPages, ...categoryPages];
+  return [...staticPages, ...reviewPages, ...categoryPages];
 }

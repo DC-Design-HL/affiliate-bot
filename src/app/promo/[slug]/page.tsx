@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: "משתלם",
       url: `https://meshtalem.design-dc.com/promo/${slug}`,
     },
-    alternates: { canonical: `https://meshtalem.design-dc.com/promo/${slug}` },
+    robots: { index: false, follow: true },
+    alternates: { canonical: `https://meshtalem.design-dc.com/reviews/${slug}` },
   };
 }
 
