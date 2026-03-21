@@ -45,6 +45,17 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-QKR45VNY2Q"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-QKR45VNY2Q');
+            `,
+          }}
+        />
         <meta name="google-site-verification" content="rW08eTrQB6759EOcXvVOVwayxqiLI3EWOSuX1stsGTk" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
