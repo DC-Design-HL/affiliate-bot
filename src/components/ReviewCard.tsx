@@ -78,23 +78,21 @@ export default function ReviewCard({ review, index }: ReviewCardProps) {
             </div>
           )}
 
-          {/* Badges top-right */}
-          <div className="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
-            {productCount >= 5 && (
-              <span className="text-xs bg-orange-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
-                TOP {productCount}
-              </span>
-            )}
-            {isBestseller && (
+          {/* Single badge top-right — priority: bestseller > new > top */}
+          <div className="absolute top-3 right-3">
+            {isBestseller ? (
               <span className="text-xs bg-red-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
                 🔥 הכי נמכר
               </span>
-            )}
-            {isNew && (
+            ) : isNew ? (
               <span className="text-xs bg-green-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
                 חדש
               </span>
-            )}
+            ) : productCount >= 5 ? (
+              <span className="text-xs bg-orange-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
+                TOP {productCount}
+              </span>
+            ) : null}
           </div>
 
           {/* Category label */}
