@@ -83,7 +83,7 @@ export default async function PromoPage({ params }: { params: Promise<{ slug: st
                   rel="nofollow sponsored noopener"
                   className="cursor-pointer block bg-gradient-to-l from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-4 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg cta-glow"
                 >
-                  לרכישה עכשיו באליאקספרס
+                  צפה בפרטים באליאקספרס
                 </a>
               </div>
             )}
@@ -140,7 +140,7 @@ export default async function PromoPage({ params }: { params: Promise<{ slug: st
                     rel="nofollow sponsored noopener"
                     className="cursor-pointer bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-sm px-5 py-2.5 rounded-xl font-bold transition-colors whitespace-nowrap shadow-sm"
                   >
-                    לרכישה
+                    צפה בפרטים
                   </a>
                 </div>
               </div>
