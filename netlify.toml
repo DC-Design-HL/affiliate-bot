@@ -6,6 +6,12 @@
   package = "@netlify/plugin-nextjs"
 
 [[redirects]]
+  from = "/promo/*"
+  to = "/reviews/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/api/tiktok/callback"
   to = "/.netlify/functions/tiktok-callback"
   status = 200
