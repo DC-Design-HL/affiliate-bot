@@ -86,6 +86,34 @@ export default function Header() {
           </div>
         </nav>
       )}
+      {/* Category bar */}
+      <div className="border-t border-gray-100 bg-gray-50/80">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center gap-2 py-2.5 overflow-x-auto scrollbar-hide md:justify-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {[
+              { name: "אלקטרוניקה", slug: "electronics", emoji: "🎧" },
+              { name: "בית וגן", slug: "home-garden", emoji: "🏠" },
+              { name: "גיימינג", slug: "gaming", emoji: "🎮" },
+              { name: "רכב", slug: "automotive", emoji: "🚗" },
+              { name: "מטבח", slug: "kitchen", emoji: "🍳" },
+              { name: "ספורט", slug: "sports", emoji: "⚽" },
+              { name: "אופנה", slug: "fashion", emoji: "👗" },
+              { name: "ילדים", slug: "babies", emoji: "👶" },
+              { name: "יופי", slug: "beauty", emoji: "💄" },
+              { name: "טיולים", slug: "travel", emoji: "✈️" },
+            ].map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-700 hover:border-orange-400 hover:text-orange-600 hover:bg-orange-50 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              >
+                <span>{cat.emoji}</span>
+                <span>{cat.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

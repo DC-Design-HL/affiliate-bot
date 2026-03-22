@@ -19,7 +19,19 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-export default function ReviewCard({ review }: { review: ReviewMeta }) {
+function isNewReview(updated: string | undefined, date: string): boolean {
+  const ref = updated || date;
+  if (!ref) return false;
+  const diff = Date.now() - new Date(ref).getTime();
+  return diff < 30 * 24 * 60 * 60 * 1000; // 30 days
+}
+
+interface ReviewCardProps {
+  review: ReviewMeta;
+  index?: number; // position in the list, used for "bestseller" badge
+}
+
+export default function ReviewCard({ review, index }: ReviewCardProps) {
   const productCount = review.products?.length || 0;
   const topProduct = review.products?.[0];
   const avgRating = review.products?.length
@@ -32,28 +44,64 @@ export default function ReviewCard({ review }: { review: ReviewMeta }) {
       }, Infinity)
     : null;
 
+  const hasImage = !!review.image;
+  const isNew = isNewReview(review.updated, review.date);
+  const isBestseller = typeof index === "number" && index < 3;
+
   return (
     <Link href={`/reviews/${review.slug}`} className="group cursor-pointer block">
       <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-300 transition-all duration-300 h-full flex flex-col">
-        {/* Top section with category gradient */}
-        <div className="relative bg-gradient-to-bl from-orange-50 via-amber-50 to-yellow-50 px-5 pt-5 pb-4">
-          <div className="flex items-start justify-between">
-            <span className="text-3xl">{categoryEmoji[review.category] || "📦"}</span>
-            {lowestPrice && lowestPrice < Infinity && (
-              <div className="bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
-                החל מ-₪{usdToIls(`$${lowestPrice}`)}
-              </div>
-            )}
+        {/* Top section with image or gradient */}
+        <div className="relative h-[180px] overflow-hidden">
+          {hasImage ? (
+            <>
+              <img
+                src={review.image}
+                alt={review.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            </>
+          ) : (
+            <div className="w-full h-full bg-gradient-to-bl from-orange-50 via-amber-50 to-yellow-50" />
+          )}
+
+          {/* Category emoji overlay */}
+          <div className="absolute bottom-3 right-3">
+            <span className="text-3xl drop-shadow-lg">{categoryEmoji[review.category] || "📦"}</span>
           </div>
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-xs bg-white/80 text-gray-600 px-2.5 py-1 rounded-full font-medium backdrop-blur-sm">
-              {categoryNames[review.category] || review.category}
-            </span>
+
+          {/* Price badge */}
+          {lowestPrice && lowestPrice < Infinity && (
+            <div className="absolute bottom-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+              החל מ-₪{usdToIls(`$${lowestPrice}`)}
+            </div>
+          )}
+
+          {/* Badges top-right */}
+          <div className="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
             {productCount >= 5 && (
-              <span className="text-xs bg-orange-500 text-white px-2.5 py-1 rounded-full font-bold">
+              <span className="text-xs bg-orange-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
                 TOP {productCount}
               </span>
             )}
+            {isBestseller && (
+              <span className="text-xs bg-red-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
+                🔥 הכי נמכר
+              </span>
+            )}
+            {isNew && (
+              <span className="text-xs bg-green-500 text-white px-2.5 py-1 rounded-full font-bold shadow-sm">
+                חדש
+              </span>
+            )}
+          </div>
+
+          {/* Category label */}
+          <div className="absolute top-3 left-3">
+            <span className="text-xs bg-white/90 text-gray-600 px-2.5 py-1 rounded-full font-medium backdrop-blur-sm shadow-sm">
+              {categoryNames[review.category] || review.category}
+            </span>
           </div>
         </div>
 

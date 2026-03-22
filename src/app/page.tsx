@@ -172,8 +172,8 @@ export default function Home() {
           </div>
           {latestReviews.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {latestReviews.map((r) => (
-                <ReviewCard key={r.meta.slug} review={r.meta} />
+              {latestReviews.map((r, i) => (
+                <ReviewCard key={r.meta.slug} review={r.meta} index={i} />
               ))}
             </div>
           ) : (
@@ -186,10 +186,10 @@ export default function Home() {
       <section className="bg-gradient-to-l from-orange-500 to-red-500 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center text-white">
           <h2 className="text-2xl md:text-3xl font-extrabold mb-3">
-            מוכנים לקנות חכם?
+            מצאו את המוצר המושלם
           </h2>
           <p className="text-orange-100 mb-6">
-            בדקנו כבר מאות מוצרים — כדי שתמצאו בדיוק מה שאתם צריכים
+            סקרנו מאות מוצרים — כדי שתבחרו נכון
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Link
