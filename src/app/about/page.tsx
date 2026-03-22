@@ -1,3 +1,4 @@
+import { getAllReviews, getAllCategories } from "@/lib/content";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -8,6 +9,10 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const reviews = getAllReviews();
+  const categories = getAllCategories();
+  const totalProducts = reviews.reduce((sum, r) => sum + (r.meta.products?.length || 0), 0);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -20,18 +25,18 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Stats Section */}
+        {/* Stats Section — Dynamic */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <div className="text-3xl font-extrabold text-orange-500 mb-2">25+</div>
+            <div className="text-3xl font-extrabold text-orange-500 mb-2">{reviews.length}+</div>
             <div className="text-sm text-gray-600">סקירות מקצועיות</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <div className="text-3xl font-extrabold text-orange-500 mb-2">87+</div>
+            <div className="text-3xl font-extrabold text-orange-500 mb-2">{totalProducts}+</div>
             <div className="text-sm text-gray-600">מוצרים נבדקו</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <div className="text-3xl font-extrabold text-orange-500 mb-2">11</div>
+            <div className="text-3xl font-extrabold text-orange-500 mb-2">{categories.length}</div>
             <div className="text-sm text-gray-600">קטגוריות</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
