@@ -1,6 +1,7 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /promo/
 
 # Host
 Host: https://meshtalem.design-dc.com
