@@ -185,7 +185,7 @@ export default async function PromoPage({ params }: { params: Promise<{ slug: st
           <h2 className="text-lg font-bold mb-4">שתפו את הדיל עם חברים</h2>
           <div className="flex justify-center gap-3 flex-wrap">
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(`${review.meta.title}\n${topProduct?.name} רק ₪${usdToIls(topProduct?.price || "")}!\nhttps://meshtalem.netlify.app/promo/${slug}`)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(`${review.meta.title}\n${topProduct?.name} רק ₪${usdToIls(topProduct?.price || "")}!\nhttps://meshtalem.design-dc.com/promo/${slug}`)}`}
               target="_blank"
               className="cursor-pointer bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl font-bold transition-colors text-sm flex items-center gap-2"
             >
@@ -193,14 +193,14 @@ export default async function PromoPage({ params }: { params: Promise<{ slug: st
               WhatsApp
             </a>
             <a
-              href={`https://t.me/share/url?url=${encodeURIComponent(`https://meshtalem.netlify.app/promo/${slug}`)}&text=${encodeURIComponent(review.meta.title)}`}
+              href={`https://t.me/share/url?url=${encodeURIComponent(`https://meshtalem.design-dc.com/promo/${slug}`)}&text=${encodeURIComponent(review.meta.title)}`}
               target="_blank"
               className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold transition-colors text-sm"
             >
               Telegram
             </a>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://meshtalem.netlify.app/promo/${slug}`)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://meshtalem.design-dc.com/promo/${slug}`)}`}
               target="_blank"
               className="cursor-pointer bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-bold transition-colors text-sm"
             >

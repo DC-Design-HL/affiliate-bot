@@ -75,8 +75,6 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
           rel="stylesheet"
         />
-        <link rel="alternate" hrefLang="he-IL" href="https://meshtalem.design-dc.com" />
-        <link rel="alternate" hrefLang="x-default" href="https://meshtalem.design-dc.com" />
       </head>
       <body className="font-heebo antialiased bg-white text-gray-900">
         {children}
