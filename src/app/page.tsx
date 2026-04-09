@@ -233,6 +233,17 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Legal links — prominently accessible from homepage */}
+      <div className="bg-gray-100 border-t border-gray-200 py-4 px-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-6 text-sm text-gray-600">
+          <Link href="/privacy" className="hover:text-gray-900 underline cursor-pointer">מדיניות פרטיות</Link>
+          <span className="text-gray-300">|</span>
+          <Link href="/terms" className="hover:text-gray-900 underline cursor-pointer">תנאי שימוש</Link>
+          <span className="text-gray-300">|</span>
+          <a href="mailto:info@design-dc.com" className="hover:text-gray-900 underline">צרו קשר</a>
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
