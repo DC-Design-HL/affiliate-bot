@@ -33,6 +33,10 @@ function extractFAQFromContent(content: string) {
   return faqs;
 }
 
+// Schema version: v2 (Product schema with image/sku/brand/shipping — 2026-04-10)
+// Revalidate hourly so Netlify's durable cache respects content updates.
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return getAllReviews().map((r) => ({ slug: r.meta.slug }));
 }
