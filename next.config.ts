@@ -7,6 +7,9 @@ import type { NextConfig } from "next";
 const DURABLE_CACHE_1H =
   "public, s-maxage=3600, stale-while-revalidate=86400, durable";
 
+// Also tag responses so we can invalidate by tag via the Netlify purge API.
+const CACHE_TAG = "page";
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -14,12 +17,14 @@ const nextConfig: NextConfig = {
         source: "/",
         headers: [
           { key: "Netlify-CDN-Cache-Control", value: DURABLE_CACHE_1H },
+          { key: "Netlify-Cache-Tag", value: CACHE_TAG },
         ],
       },
       {
         source: "/reviews/:path*",
         headers: [
           { key: "Netlify-CDN-Cache-Control", value: DURABLE_CACHE_1H },
+          { key: "Netlify-Cache-Tag", value: CACHE_TAG },
         ],
       },
     ];
