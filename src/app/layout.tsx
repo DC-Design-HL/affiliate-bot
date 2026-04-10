@@ -59,6 +59,7 @@ export default function RootLayout({
           `}
         </Script>
         <meta name="google-site-verification" content="rW08eTrQB6759EOcXvVOVwayxqiLI3EWOSuX1stsGTk" />
+        <meta name="x-build-id" content="2026-04-10T19:00Z-cache-bust" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
