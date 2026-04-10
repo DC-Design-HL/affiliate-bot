@@ -103,31 +103,86 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
   } : null;
 
   // Add Product+Review schema if products exist
-  const productJsonLd = review.meta.products?.map((p, i) => ({
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: p.name,
-    review: {
-      "@type": "Review",
-      reviewRating: { "@type": "Rating", ratingValue: p.rating, bestRating: 5 },
-      author: { "@type": "Organization", name: "משתלם" },
-      reviewBody: review.meta.excerpt,
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: p.rating,
-      bestRating: 5,
-      ratingCount: 1,
-    },
-    offers: {
-      "@type": "Offer",
-      url: p.affiliateUrl,
-      priceCurrency: "USD",
-      price: parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0,
-      availability: "https://schema.org/InStock",
-    },
-    ...(i === 0 ? { position: 1 } : {}),
-  })) || [];
+  const productJsonLd = review.meta.products?.map((p, i) => {
+    const productImage = p.image
+      ? (p.image.startsWith("http") ? p.image : `https://meshtalem.design-dc.com${p.image}`)
+      : `https://meshtalem.design-dc.com${review.meta.image}`;
+    const brandName = p.name.split(" ")[0] || "AliExpress";
+    const sku = `${slug}-${i + 1}`;
+    // Price valid until 1 year from review date (or updated date)
+    const baseDate = new Date(review.meta.updated || review.meta.date);
+    baseDate.setFullYear(baseDate.getFullYear() + 1);
+    const priceValidUntil = baseDate.toISOString().split("T")[0];
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: p.name,
+      image: [productImage],
+      description: review.meta.excerpt,
+      sku,
+      mpn: sku,
+      brand: { "@type": "Brand", name: brandName },
+      review: {
+        "@type": "Review",
+        reviewRating: { "@type": "Rating", ratingValue: p.rating, bestRating: 5 },
+        author: { "@type": "Organization", name: "משתלם" },
+        reviewBody: review.meta.excerpt,
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: p.rating,
+        bestRating: 5,
+        ratingCount: 1,
+      },
+      offers: {
+        "@type": "Offer",
+        url: p.affiliateUrl,
+        priceCurrency: "USD",
+        price: parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0,
+        priceValidUntil,
+        availability: "https://schema.org/InStock",
+        itemCondition: "https://schema.org/NewCondition",
+        seller: { "@type": "Organization", name: "AliExpress" },
+        hasMerchantReturnPolicy: {
+          "@type": "MerchantReturnPolicy",
+          applicableCountry: "IL",
+          returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+          merchantReturnDays: 15,
+          returnMethod: "https://schema.org/ReturnByMail",
+          returnFees: "https://schema.org/FreeReturn",
+        },
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingRate: {
+            "@type": "MonetaryAmount",
+            value: 0,
+            currency: "USD",
+          },
+          shippingDestination: {
+            "@type": "DefinedRegion",
+            addressCountry: "IL",
+          },
+          deliveryTime: {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: {
+              "@type": "QuantitativeValue",
+              minValue: 1,
+              maxValue: 3,
+              unitCode: "DAY",
+            },
+            transitTime: {
+              "@type": "QuantitativeValue",
+              minValue: 10,
+              maxValue: 25,
+              unitCode: "DAY",
+            },
+          },
+        },
+      },
+      ...(i === 0 ? { position: 1 } : {}),
+    };
+  }) || [];
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
