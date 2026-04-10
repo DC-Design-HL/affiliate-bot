@@ -10,6 +10,18 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Cap Durable Cache TTL on dynamic pages so new deploys take effect quickly.
+# Netlify was pinning review pages for 352 days, ignoring new builds.
+[[headers]]
+  for = "/reviews/*"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, s-maxage=3600, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, s-maxage=3600, stale-while-revalidate=86400, durable"
+
 [[redirects]]
   from = "/promo/*"
   to = "/reviews/:splat"
