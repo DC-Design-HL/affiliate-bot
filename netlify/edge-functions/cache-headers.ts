@@ -1,6 +1,7 @@
 import type { Context } from "https://edge.netlify.com";
 
 // Cap Netlify Durable Cache TTL on dynamic pages to 1h.
+// Force-deploy: bust stale ISR 404 blobs for 6 review pages (2026-04-14)
 //
 // Why an Edge Function and not middleware / next.config / netlify.toml?
 // - @netlify/plugin-nextjs hardcodes s-maxage=31536000 (1y) for SSG routes
