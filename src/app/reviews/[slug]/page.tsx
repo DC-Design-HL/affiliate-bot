@@ -33,7 +33,7 @@ function extractFAQFromContent(content: string) {
   return faqs;
 }
 
-// Schema version: v2 (Product schema with image/sku/brand/shipping — 2026-04-10)
+// Schema version: v3 — deploy bust 2026-04-14
 // Revalidate hourly so Netlify's durable cache respects content updates.
 export const revalidate = 3600;
 
@@ -190,6 +190,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <meta name="build-version" content="v3-20260414" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {productJsonLd.map((p, i) => (
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(p) }} />

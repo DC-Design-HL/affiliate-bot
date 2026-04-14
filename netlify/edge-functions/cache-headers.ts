@@ -28,6 +28,14 @@ export default async (request: Request, context: Context) => {
   }
 
   const newResponse = new Response(response.body, response);
+
+  // Never cache error responses in Durable Cache — a cached 404 with a 1y TTL
+  // is nearly impossible to purge and blocks pages from ever being served.
+  if (response.status >= 400) {
+    newResponse.headers.set("Netlify-CDN-Cache-Control", "public, no-store");
+    return newResponse;
+  }
+
   newResponse.headers.set("Netlify-CDN-Cache-Control", DURABLE_CACHE_1H);
   newResponse.headers.set("Netlify-Cache-Tag", "page");
   return newResponse;
