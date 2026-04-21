@@ -22,45 +22,6 @@
   [headers.values]
     Netlify-CDN-Cache-Control = "public, s-maxage=3600, stale-while-revalidate=86400, durable"
 
-# Temporary: proxy 6 review pages through default domain to bypass stale
-# CDN edge cache (404s cached with 1y TTL from old deploy 69c78a0c).
-# Remove once the CDN cache rotates naturally or Netlify purge works.
-[[redirects]]
-  from = "/reviews/best-ring-light-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/best-ring-light-2026"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/reviews/spring-fashion-trends-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/spring-fashion-trends-2026"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/reviews/best-kids-toys-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/best-kids-toys-2026"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/reviews/best-resistance-bands-workout-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/best-resistance-bands-workout-2026"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/reviews/best-winter-clothes-aliexpress-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/best-winter-clothes-aliexpress-2026"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/reviews/best-makeup-beauty-aliexpress-2026"
-  to = "https://affiliate-bot.netlify.app/reviews/best-makeup-beauty-aliexpress-2026"
-  status = 200
-  force = true
-
 [[redirects]]
   from = "/promo/*"
   to = "/reviews/:splat"
